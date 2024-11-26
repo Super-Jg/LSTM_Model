@@ -86,13 +86,12 @@ class LSTM():
         print(self.input_train_y)
     def train(self,epoch,lr):
         total_loss_keep = []
-        with tf.GradientTape() as tape:
-            for _ in range(epoch):
-                self.short_mem = 0.
-                self.long_mem = 0.
-                loss = 0
-
+        for _ in range(epoch):
+            self.short_mem = 0.
+            self.long_mem = 0.
+            with tf.GradientTape() as tape:
                 input_train_x = tf.nn.sigmoid((self.input_train_x @ self.input_w + self.input_b)@ self.input_w2+ self.input_b2)
+                loss = 0
 
                 for X,Y in zip(input_train_x,self.input_train_y):
                     self.long_mem = self.long_mem * self.Forget_gate.forget_calc(X,self.short_mem) + self.Input_gate.input_calc(inputdata=X,short_memory=self.short_mem)
